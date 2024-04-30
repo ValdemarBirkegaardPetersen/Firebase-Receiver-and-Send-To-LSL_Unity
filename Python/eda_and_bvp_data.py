@@ -6,7 +6,7 @@ import time
 import heartpy as hp
 
 
-data, header = pyxdf.load_xdf('test.xdf')
+data, header = pyxdf.load_xdf('test2.xdf')
 
 
 
@@ -15,7 +15,7 @@ marker_stream = data[0]
 marker_time_stamps = marker_stream["time_stamps"]
 marker_time_series = marker_stream["time_series"]
 
-
+print(marker_time_series)
 
 
 # Used for getting actual data
@@ -28,9 +28,6 @@ what = time_series[ :,0]
 bvp = time_series[ :,1]
 eda = time_series[ :,2]
 
-print(len(bvp))
+print(eda)
 
 
-
-
-#plt.show()
