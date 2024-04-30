@@ -17,16 +17,16 @@ def save_to_csv(timestamps, markers, filename='output.csv'):
     print(f"File saved at: {filepath}")
 
 
-data, header = pyxdf.load_xdf("BioSignalsPython_NOT_FOR_USE\sub-P003_ses-S001_task-Default_run-001_eeg.xdf")
+data, header = pyxdf.load_xdf("sub-P003_ses-S001_task-Default_run-001_eeg.xdf")
 
 for stream in data:
     time_stamps = stream["time_stamps"]
     markers = stream["time_series"]
 
-    print(time_stamps)
-    print(markers)
+    print(len(time_stamps))
+    print(len(markers))
     
-    save_to_csv(time_stamps, markers, filename='P001.csv')
+    #save_to_csv(time_stamps, markers, filename='P001.csv')
     
     
 

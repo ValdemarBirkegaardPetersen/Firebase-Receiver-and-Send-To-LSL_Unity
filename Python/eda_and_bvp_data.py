@@ -3,28 +3,34 @@ import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime, timedelta
 import time
-
-data, header = pyxdf.load_xdf('BioSignalsPython_NOT_FOR_USE\dual_channel_data.xdf')
-
+import heartpy as hp
 
 
-for stream in data:
-    time_stamps = stream["time_stamps"]
-    time_series = stream["time_series"]
+data, header = pyxdf.load_xdf('test.xdf')
 
-    y = stream['time_series']
 
-    #for timestamp, marker in zip(stream['time_stamps'], y):
-        #print(f'Marker "{marker[0]}" @ {timestamp:.2f}s')
 
-    timez = time_stamps
-    what = time_series[ :,0]
-    eda = time_series[ :,1]
-    bvp = time_series[ :,2]
+# Used for getting markers
+marker_stream = data[0]
+marker_time_stamps = marker_stream["time_stamps"]
+marker_time_series = marker_stream["time_series"]
+
+
+
+
+# Used for getting actual data
+data_stream = data[1]
+time_stamps = data_stream["time_stamps"]
+time_series = data_stream["time_series"]
     
-    plt.plot(what, bvp)
-    print(len(bvp))
-    
+timer = time_stamps
+what = time_series[ :,0]
+bvp = time_series[ :,1]
+eda = time_series[ :,2]
+
+print(len(bvp))
 
 
-plt.show()
+
+
+#plt.show()
