@@ -6,7 +6,7 @@ import time
 import heartpy as hp
 
 
-data, header = pyxdf.load_xdf('test2.xdf')
+data, header = pyxdf.load_xdf('test5.xdf')
 
 
 
