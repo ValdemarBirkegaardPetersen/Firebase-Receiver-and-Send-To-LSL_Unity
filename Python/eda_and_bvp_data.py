@@ -4,9 +4,10 @@ import numpy as np
 from datetime import datetime, timedelta
 import time
 import heartpy as hp
+from scipy.signal import find_peaks
+import neurokit2 as nk
 
-
-data, header = pyxdf.load_xdf('test5.xdf')
+data, header = pyxdf.load_xdf('test6.xdf')
 
 
 
@@ -39,6 +40,25 @@ def analyze_bvp_data(bvp):
     print("RMSSD:", measures['rmssd'])
 
 
+def plot_eda_with_peaks(data_timestamps, eda):
+    # Normalize EDA data if needed (depending on the range and scale)
+    eda = (eda - np.min(eda)) / (np.max(eda) - np.min(eda))
+
+    # Find peaks which might correspond to SCRs
+    peaks, _ = find_peaks(eda, height=0.1)  # height threshold is adjustable based on your data characteristics
+
+    # Plot EDA data and mark peaks
+    plt.figure(figsize=(12, 6))
+    plt.plot(data_timestamps, eda, label='EDA')
+    plt.scatter(data_timestamps[peaks], eda[peaks], color='red', label='Peaks')  # mark peaks
+    plt.title('EDA Signal with Detected Peaks')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Normalized EDA')
+    plt.legend()
+    plt.show()
+    
+    
+
 
 marker_timestamps, marker_timeseries = get_marker_time_series(data)
 
@@ -46,6 +66,10 @@ data_timestamps, huh, bvp, eda = get_bvp_and_eda_data(data)
 
 # Call the function with the bvp data and sampling rate
 analyze_bvp_data(bvp)
+#plot_eda_with_peaks(data_timestamps,eda)
 
 
 
+signals, info = nk.eda_process(eda, sampling_rate=1000)
+analyze_df = nk.eda_analyze(signals, sampling_rate=1000)
+print(analyze_df)
