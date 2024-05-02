@@ -10,6 +10,12 @@ import matplotlib.pyplot as plt
 
 data, header = pyxdf.load_xdf('test6.xdf')
 
+# CURERNT CHATGPT PROMPT # 
+'''
+I have a 1D array called 'bvp' that contains raw blood volume pulse values. I have another 1d array with the same excact length, that contains each bvp values corresponding timestamps. 
+
+I then have two 1d arrays, that are called "marker_timestamps" which contains the time for when the marker was placed,  and "marker_timeseries" which contains the value/name of the marker such as "Task 1 Started". After a task is started, it will always be followed by a next marker which inditates when task ended, this marker will always be named "Task Finished" and will occurence after the "Task X Started". This is how the bvp data should be segmented, from that Started timestamp to the Task Finished timestamps. I have 5 events, so there should be five segmentations
+'''
 
 def get_marker_time_series(data):
     marker_stream = data[0]
@@ -69,7 +75,7 @@ marker_timestamps, marker_timeseries = get_marker_time_series(data)
 
 data_timestamps, huh, bvp, eda = get_bvp_and_eda_data(data)
 
-analyze_bvp_data(bvp)
+#analyze_bvp_data(bvp)
 #plot_eda_with_peaks(data_timestamps,eda)
 
 
@@ -91,9 +97,19 @@ def analyze_eda_data(eda, sampling_rate):
     return analyze_df, mean_eda
 
 analyze_df, mean_eda = analyze_eda_data(eda, sampling_rate=1000)
-print(analyze_df)
-print("Mean EDA:", mean_eda)
+#print(analyze_df)
+#print("Mean EDA:", mean_eda)
 
-eda_signals, info = nk.eda_process(eda, sampling_rate=1000)
-
-nk.eda_plot(eda_signals, info)
+segments = []
+for i, marker in enumerate(marker_timeseries):
+    print(marker[0])
+    if "Started" in marker[0]:
+        start_time = marker_timestamps[i]
+        end_time = marker_timestamps[i + 1]  # Assumes the next marker is the end
+        start_index = np.searchsorted(data_timestamps, start_time)
+        end_index = np.searchsorted(data_timestamps, end_time)
+        segment = bvp[start_index:end_index]
+        segments.append((start_time, end_time, segment))
+        
+print(segments)
+print(len(segments))
