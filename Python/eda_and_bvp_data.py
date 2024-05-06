@@ -25,6 +25,8 @@ def get_marker_time_series(data):
     marker_time_stamps = marker_stream["time_stamps"]
     marker_time_series = marker_stream["time_series"]
 
+    print(marker_time_series)
+
     marker_dict = {}
     for x in range(len(marker_time_stamps)):
         marker_dict[marker_time_stamps[x]] = marker_time_series[x]
@@ -35,9 +37,11 @@ def get_marker_time_series(data):
 def get_bvp_and_eda_data(data):
 
     data_stream = data[1]
+    print(data_stream)
     data_timestamps = data_stream["time_stamps"]
     data_timeseries = data_stream["time_series"]
 
+    print(data_timeseries)
     huh = data_timeseries[:, 0]
     bvp = data_timeseries[:, 1]
     eda = data_timeseries[:, 2]
@@ -103,12 +107,13 @@ def analyze_bvp_task_data(bvp1, bvp2, bvp3, bvp4, bvp5, sampling_rate=1000):
     task5_bmp = None
     task5_sdnn = None
     task5_rmssd = None
-    processed_data, measures = hp.process(bvp1, sampling_rate)
 
     print(
         "\n---------------------------------------------------------------------------------"
     )
     print("Task 1 \n")
+    #bvp1 = hp.enhance_peaks(bvp1)
+    processed_data, measures = hp.process(bvp1, sampling_rate)
     print("Heart Rate Measures:")
     print("BPM:", measures["bpm"])
     task1_bmp = measures["bpm"]
@@ -118,11 +123,12 @@ def analyze_bvp_task_data(bvp1, bvp2, bvp3, bvp4, bvp5, sampling_rate=1000):
     print("RMSSD:", measures["rmssd"])
     task1_rmssd = measures["rmssd"]
 
-    processed_data, measures = hp.process(bvp2, sampling_rate)
     print(
         "\n---------------------------------------------------------------------------------"
     )
     print("Task 2 \n")
+    #bvp2 = hp.enhance_peaks(bvp2)
+    processed_data, measures = hp.process(bvp2, sampling_rate)
     print("Heart Rate Measures:")
     print("BPM:", measures["bpm"])
     task2_bmp = measures["bpm"]
@@ -132,11 +138,12 @@ def analyze_bvp_task_data(bvp1, bvp2, bvp3, bvp4, bvp5, sampling_rate=1000):
     print("RMSSD:", measures["rmssd"])
     task2_rmssd = measures["rmssd"]
 
-    processed_data, measures = hp.process(bvp4, sampling_rate)
     print(
         "\n---------------------------------------------------------------------------------"
     )
     print("Task 3 \n")
+    #bvp3 = hp.enhance_peaks(bvp3)
+    processed_data, measures = hp.process(bvp3, sampling_rate)
     print("Heart Rate Measures:")
     print("BPM:", measures["bpm"])
     task3_bmp = measures["bpm"]
@@ -146,11 +153,12 @@ def analyze_bvp_task_data(bvp1, bvp2, bvp3, bvp4, bvp5, sampling_rate=1000):
     print("RMSSD:", measures["rmssd"])
     task3_rmssd = measures["rmssd"]
 
-    processed_data, measures = hp.process(bvp5, sampling_rate)
     print(
         "\n---------------------------------------------------------------------------------"
     )
     print("Task 4 \n")
+    #bvp4 = hp.enhance_peaks(bvp4)
+    processed_data, measures = hp.process(bvp4, sampling_rate)
     print("Heart Rate Measures:")
     print("BPM:", measures["bpm"])
     task4_bmp = measures["bpm"]
@@ -160,11 +168,12 @@ def analyze_bvp_task_data(bvp1, bvp2, bvp3, bvp4, bvp5, sampling_rate=1000):
     print("RMSSD:", measures["rmssd"])
     task4_rmssd = measures["rmssd"]
 
-    processed_data, measures = hp.process(bvp1, sampling_rate)
     print(
         "\n---------------------------------------------------------------------------------"
     )
     print("Task 5 \n")
+    #bvp5 = hp.enhance_peaks(bvp5)
+    processed_data, measures = hp.process(bvp5, sampling_rate)
     print("Heart Rate Measures:")
     print("BPM:", measures["bpm"])
     task5_bmp = measures["bpm"]
@@ -235,6 +244,7 @@ def analyze_eda_baseline_data(eda_baseline, sampling_rate=1000):
     analyze_df = nk.eda_analyze(signals, sampling_rate=sampling_rate)
     mean_eda = np.mean(eda_baseline)
     print("EDA Mean:  " + str(mean_eda))
+    print(analyze_df)
 
 
 def analyze_eda_task_data(
@@ -410,9 +420,10 @@ def main():
 
     # BVP
     # analyze_bvp_data(bvp)
-
-    # analyze_bvp_baseline_data(bvp)
-    # analyze_eda_baseline_data(eda)
+    
+    #analyze_bvp_baseline_data(bvp)
+    #analyze_eda_baseline_data(eda)
+    
 
     task1_bvp, task2_bvp, task3_bvp, task4_bvp, task5_bvp = extract_task_segments(
         marker_timestamps, marker_timeseries, data_timestamps, bvp)
@@ -444,6 +455,8 @@ def main():
                    task3_src_n[0], task3_src_amplitude_avg[0], task3_eda_mean,
                    task4_src_n[0], task4_src_amplitude_avg[0], task4_eda_mean,
                    task5_src_n[0], task5_src_amplitude_avg[0], task5_eda_mean)
+                   
+    
 
 
 if __name__ == "__main__":
